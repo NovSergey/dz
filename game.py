@@ -2,8 +2,10 @@ import keyboard
 import random
 import time
 import os
-import emoji
+
+flag = True
 points = 0
+count_enemys = random.randint(5, 10)
 pole = "⬜"
 enemy = "🔺"
 player = "🟩"
@@ -13,6 +15,14 @@ map_[player_coord] = player
 
 
 
+
+def add_en():
+    global player, enemy
+    coord = random.randint(0 , 99)
+    if map_[coord] != player and map_[coord] != enemy:       
+        map_[coord] = enemy
+    else:
+        add_en()
 def print_():
     global points
     os.system("cls")
@@ -21,14 +31,14 @@ def print_():
         for j in range(10*i, 10*(i+1)):
             strk += map_[j]
         print(strk)
-    print(points)
-    print()
+    print(f"Поймано врагов: {points}")
     time.sleep(0.1)
 
 def check():    
-    global player_coord, points
+    global player_coord, points, flag
     if map_[player_coord] == enemy:
         points += 1
+    
 
 def plus(count):
     global player_coord
@@ -54,14 +64,14 @@ def minus(count):
     check()
     map_[player_coord] = player
 
-for i in range(random.randint(5, 10)):
-    en_cord = random.randint(0, 99)
-    while map_[en_cord] == player and map_[en_cord] == enemy:
-        en_cord = random.randint(0, 99)
-    map_[en_cord] = enemy
+
+
+
+for i in range(1,count_enemys+1):
+    add_en()
 print_()
 
-while True:
+while count_enemys != points:
     if keyboard.is_pressed("esc"):
         exit()
     elif keyboard.is_pressed('w'):
@@ -77,4 +87,4 @@ while True:
         plus(1)
         print_()
 
-
+print("Вы выйграли!!")
